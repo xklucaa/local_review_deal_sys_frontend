@@ -13,14 +13,17 @@ const goBack = () => {
   router.go(-1);
 }
 const sortAndQuery = (sortBy) => {
-  this.params.sortBy = sortBy;
   filteShops();
 }
 const filteShops = () => {
   service.get("/shop/of/type", {
-    params: info.params
+    params: {
+      ...info.params,
+      typeId: Number(route.query.id) || 0
+    }
   })
     .then(({ data }) => {
+      console.log(route.query);
       if (!data) {
         return
       }
@@ -39,6 +42,8 @@ const toDetail = (id) => {
   router.push({ path: '/shop_details', query: { id } })
 }
 onMounted(() => {
+  info.typeId = route.query.id;
+  info.typeName = route.query.name;
   service.get("/shop-type/list")
     .then(({ data }) => {
       info.types = data;
@@ -56,12 +61,10 @@ const info = reactive({
   params: {
     typeId: 0,
     current: 1,
-    sortBy: "",
     x: 120.149993, // 经度
     y: 30.334229 // 纬度 写死的是不
   }
 })
-info.typeName = route.query.name;
 const count = ref(0)
 </script>
 <template>

@@ -29,17 +29,24 @@ const route = useRoute();
 const blog = reactive({
 })
 const toOtherInfo = () => {
-  //todo 根据当前博客 创建者跳转至用户信息 可能是当前用户也可能不是当前用户
-  router.push({
-    path: "/other_user_info", query: {}
-  })
+  // 判断当前博客作者是否是登录用户
+  if (user.id === blog.userId) {
+    // 跳转到自己的主页
+    router.push({ path: "/user_info" });
+  } else {
+    // 跳转到他人主页，携带作者ID
+    router.push({
+      path: "/other_user_info",
+      query: { id: blog.userId }
+    });
+  }
 }
 onMounted(() => {
   let id = route.query.id;
   queryBlogById(id)
 })
 const queryBlogById = (id) => {
-  service.post("/blog/queryBlogById", { id: id })
+  service.get(`/blog/${id}`)
     .then(({ data }) => {
       data.images = data.images.split(",")
       Object.assign(blog, data);
@@ -50,6 +57,19 @@ const queryBlogById = (id) => {
     })
     .catch((err) => { ElMessage('查询博客信息失败了呢' + err) })
 }
+// // 将原来的 POST 请求改为 GET 请求，并修改路径
+// const queryBlogById = (id) => {
+//   service.get(`/blog/${id}`)
+//       .then(({ data }) => {
+//         data.images = data.images.split(",")
+//         Object.assign(blog, data);
+//
+//         queryShopById(data.shopId)
+//         queryLikeList(id);
+//         queryLoginUser();
+//       })
+//       .catch((err) => { ElMessage('查询博客信息失败了呢' + err) })
+// }
 const queryShopById = (shopId) => {
   service.get("/shop/" + shopId)
     .then(({ data }) => {

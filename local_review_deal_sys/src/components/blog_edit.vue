@@ -35,7 +35,12 @@ const fileSelected = () => {
 }
 
 const queryShops = () => {
-  service.get("/shop/of/name?name=" + shopName.value)
+  service.get("/shop/of/name", {
+    params: {
+      name: shopName.value,
+      current: 1 // 默认页码
+    }
+  })
     .then(({ data }) => shops.value = data)
     .catch((err) => {
       ElMessage("查询店铺出错了呢" + err)

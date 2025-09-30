@@ -46,7 +46,7 @@ onMounted(() => {
     })
 })
 const queryBlogById = (b) => {
-  service.post("/blog/queryBlogById", { id: b.id })
+  service.get("/blog/" + b.id)
     .then(({ data }) => {
       b.liked = data.liked;
       b.isLike = data.isLike;
