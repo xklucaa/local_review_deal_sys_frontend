@@ -38,27 +38,62 @@ onMounted(() => {
 })
 const querShopbyid = (shopId) => {
   service.get("/shop/" + shopId)
-    .then(({ data }) => {
-      data.images = data.images.split(",")
-      data.score = data.score / 10;
-      Object.assign(shop,data)
-    })
-    .catch((err) => { ElMessage("获取店铺的情况出错了呢" + err) })
+      .then(({ data }) => {
+        data.images = data.images.split(",")
+        data.score = data.score / 10;
+        Object.assign(shop,data)
+      })
+      .catch((err) => { ElMessage("获取店铺的情况出错了呢" + err) })
 }
 const queryVochersByid = (shopId) => {
   service.get("/voucher/list/" + shopId)
-        .then(({data}) => {
-          vouchers.value = data;
-        })
-        .catch((err)=>{ElMessage('查询这个店铺的优惠券信息出错了呢'+err)})
+      .then(({data}) => {
+        vouchers.value = data;
+      })
+      .catch((err)=>{ElMessage('查询这个店铺的优惠券信息出错了呢'+err)})
+}
+// 添加判断秒杀是否开始的函数
+const isNotBegin = (v) => {
+  return new Date(v.beginTime).getTime() > new Date().getTime();
+}
+
+// 添加格式化时间的函数（示例实现）
+const formatTime = (v) => {
+  const now = new Date();
+  const beginTime = new Date(v.beginTime);
+  const endTime = new Date(v.endTime);
+
+  if (now < beginTime) {
+    // 未开始，显示倒计时
+    const diff = beginTime - now;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return `开始: ${hours}:${minutes}:${seconds}`;
+  } else if (now > endTime) {
+    // 已结束
+    return "已结束";
+  } else {
+    // 进行中
+    return "进行中";
+  }
+}
+const seckill = (v) => {
+  service.post("/voucher-order/seckill/" + v.id)
+      .then(() => {
+        ElMessage('抢购成功');
+      })
+      .catch((error) => {
+        ElMessage('抢购失败: ' + "每人只可购买一次！");
+      });
 }
 </script>
 
 <template>
   <div class="header">
     <div class="header-back-btn" @click="goBack"><el-icon>
-        <ArrowLeftBold />
-      </el-icon></div>
+      <ArrowLeftBold />
+    </el-icon></div>
     <div class="header-title">店铺详情</div>
     <div class="header-share">...</div>
   </div>
@@ -74,8 +109,8 @@ const queryVochersByid = (shopId) => {
       <img src="/imgs/bd.png" width="63" height="20" alt="">
       <span>拱墅区好评榜第3名</span>
       <div><el-icon>
-          <ArrowRightBold />
-        </el-icon></div>
+        <ArrowRightBold />
+      </el-icon></div>
     </div>
     <div class="shop-images">
       <div v-for="(s, i) in shop.images" :key="i">
@@ -84,8 +119,8 @@ const queryVochersByid = (shopId) => {
     </div>
     <div class="shop-address">
       <div><el-icon>
-          <MapLocation />
-        </el-icon></div>
+        <MapLocation />
+      </el-icon></div>
       <span>{{ shop.address }}</span>
       <div style="width: 10px; flex-grow: 2; text-align: center; color: #e1e2e3">|</div>
       <div style="margin: 0 5px"><img
@@ -121,7 +156,7 @@ const queryVochersByid = (shopId) => {
         </div>
       </div>
       <div class="voucher-right">
-        <div v-if="v.type" class="seckill-box">vouchers
+        <div v-if="v.type" class="seckill-box">
           <div class="voucher-btn" :class="{ 'disable-btn': isNotBegin(v) || v.stock < 1 }" @click="seckill(v)">限时抢购
           </div>
           <div class="seckill-stock">剩余 <span>{{ v.stock }}</span> 张</div>
@@ -152,8 +187,8 @@ const queryVochersByid = (shopId) => {
       <div class="comment-box" v-for="i in 3" :key="i">
         <div class="comment-icon">
           <img
-            src="https://p0.meituan.net/userheadpicbackend/57e44d6eba01aad0d8d711788f30a126549507.jpg%4048w_48h_1e_1c_1l%7Cwatermark%3D0"
-            alt="">
+              src="https://p0.meituan.net/userheadpicbackend/57e44d6eba01aad0d8d711788f30a126549507.jpg%4048w_48h_1e_1c_1l%7Cwatermark%3D0"
+              alt="">
         </div>
         <div class="comment-info">
           <div class="comment-user">叶小乙 <span>Lv5</span></div>
@@ -166,17 +201,17 @@ const queryVochersByid = (shopId) => {
           </div>
           <div class="comment-images">
             <img
-              src="https://qcloud.dpfile.com/pc/6T7MfXzx7USPIkSy7jzm40qZSmlHUF2jd-FZUL6WpjE9byagjLlrseWxnl1LcbuSGybIjx5eX6WNgCPvcASYAw.jpg"
-              alt="">
+                src="https://qcloud.dpfile.com/pc/6T7MfXzx7USPIkSy7jzm40qZSmlHUF2jd-FZUL6WpjE9byagjLlrseWxnl1LcbuSGybIjx5eX6WNgCPvcASYAw.jpg"
+                alt="">
             <img
-              src="https://qcloud.dpfile.com/pc/sZ5q-zgglv4VXEWU71xCFjnLM_jUHq-ylq0GKivtrz3JksWQ1f7oBWZsxm1DWgcaGybIjx5eX6WNgCPvcASYAw.jpg"
-              alt="">
+                src="https://qcloud.dpfile.com/pc/sZ5q-zgglv4VXEWU71xCFjnLM_jUHq-ylq0GKivtrz3JksWQ1f7oBWZsxm1DWgcaGybIjx5eX6WNgCPvcASYAw.jpg"
+                alt="">
             <img
-              src="https://qcloud.dpfile.com/pc/xZy6W4NwuRFchlOi43DVLPFsx7KWWvPqifE1JTe_jreqdsBYA9CFkeSm2ZlF0OVmGybIjx5eX6WNgCPvcASYAw.jpg"
-              alt="">
+                src="https://qcloud.dpfile.com/pc/xZy6W4NwuRFchlOi43DVLPFsx7KWWvPqifE1JTe_jreqdsBYA9CFkeSm2ZlF0OVmGybIjx5eX6WNgCPvcASYAw.jpg"
+                alt="">
             <img
-              src="https://qcloud.dpfile.com/pc/xZy6W4NwuRFchlOi43DVLPFsx7KWWvPqifE1JTe_jreqdsBYA9CFkeSm2ZlF0OVmGybIjx5eX6WNgCPvcASYAw.jpg"
-              alt="">
+                src="https://qcloud.dpfile.com/pc/xZy6W4NwuRFchlOi43DVLPFsx7KWWvPqifE1JTe_jreqdsBYA9CFkeSm2ZlF0OVmGybIjx5eX6WNgCPvcASYAw.jpg"
+                alt="">
           </div>
           <div>
             浏览641 &nbsp;&nbsp;&nbsp;&nbsp;评论5
@@ -184,7 +219,7 @@ const queryVochersByid = (shopId) => {
         </div>
       </div>
       <div
-        style="display: flex; justify-content: space-between;padding: 15px 0; border-top: 1px solid #f1f1f1; margin-top: 10px;">
+          style="display: flex; justify-content: space-between;padding: 15px 0; border-top: 1px solid #f1f1f1; margin-top: 10px;">
         <div>查看全部119条评价</div>
         <div><i class="el-icon-arrow-right"></i></div>
       </div>
