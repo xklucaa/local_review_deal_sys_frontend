@@ -55,12 +55,16 @@ const count = ref(0)
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 0.5rem 0; /* 原来是 1rem 改为 0.5rem */
   z-index: 2000;
   background-color: white;
   position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
+
+
 
 .read-the-docs {
   color: #888;
@@ -68,5 +72,10 @@ const count = ref(0)
 
 .add-btn {
   width: 3rem;
+  height: 3rem; /* 保持宽高一致，不会撑高 footer */
 }
+.foot {
+  min-height: 3.5rem; /* 控制最小高度 */
+}
+
 </style>
