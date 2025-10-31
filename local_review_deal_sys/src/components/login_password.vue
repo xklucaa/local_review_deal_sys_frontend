@@ -1,6 +1,8 @@
 <script setup>
+import { ElMessage } from 'element-plus';
 import { reactive, ref,inject, } from 'vue'
 import { useRouter } from 'vue-router';
+import service from '../utils/request';
 
 defineProps({
   msg: String,
@@ -12,6 +14,35 @@ const goBack = () => {
   router.go(-1);
   fun();
 }
+
+const login = () => {
+  // 验证邮箱号
+  if (!form.email) {
+    ElMessage("邮箱账号不能为空！");
+    return
+  }
+
+  // 验证密码
+  if (!form.password) {
+    ElMessage("密码不能为空！");
+    return
+  }
+  service.post("/user/loginByPassword", form)
+      .then(({ data }) => {
+        if (data) {
+          console.log(data);
+          console.log("router" + router);
+          // 保存用户信息到sessionStorage
+          sessionStorage.setItem("token", data);
+          // 跳转到首页
+        }
+        router.push({ path: '/1', query: {} })
+      })
+      .catch(err => {
+        ElMessage.error('登录失败,请检查账号和密码是否填写正确!' )
+      })
+}
+
 const goMsgLogin = ( )=>{
   router.push({
     path:'/login',query:{}
@@ -21,7 +52,8 @@ const goMsgLogin = ( )=>{
 const  disabled =ref(false);
 const radio = ref(false)
 const form  = reactive({
-  phone:null
+  email:null,
+  password:null
 })
 const codeBtnMsg = ref('点击发送验证码')
 </script>
@@ -34,10 +66,10 @@ const codeBtnMsg = ref('点击发送验证码')
     </div>
     <div class="content">
       <div class="login-form">
-        <el-input placeholder="请输入手机号" v-model="form.phone">
+        <el-input placeholder="请输入邮箱账号" v-model="form.email">
         </el-input>
         <div style="height: 5px"></div>
-        <el-input placeholder="请输入密码" v-model="form.password">
+        <el-input placeholder="请输入密码" v-model="form.password" show-password>
         </el-input>
         <div style="text-align: center; color: #8c939d;margin: 5px 0"><a href="javascript:void(0)">忘记密码</a></div>
         <el-button @click="login" style="width: 100%; background-color:#f63; color: #fff;">登录</el-button>

@@ -25,7 +25,7 @@ const logout = () => {
       // 清理session
       sessionStorage.removeItem("token")
       // 跳转
-      ElMessage('退出登录成功！宝贝')
+      ElMessage('退出登录成功！')
       router.push({
         path: '/login', query: {}
       })

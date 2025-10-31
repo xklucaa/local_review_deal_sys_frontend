@@ -21,8 +21,25 @@ const goLoginByPassword = () => {
 }
 const login = () => {
 
-  if (!form.phone || !form.code) {
-    ElMessage("手机号和验证码不能为空！");
+  if (!form.email) {
+    ElMessage("邮箱账号不能为空！");
+    return
+  }
+  if (!form.code) {
+    ElMessage("验证码不能为空！");
+    return
+  }
+  // 添加密码验证
+  if (!form.password) {
+    ElMessage("密码不能为空！");
+    return
+  }
+  if (!form.confirmPassword) {
+    ElMessage("确认密码不能为空！");
+    return
+  }
+  if (form.password !== form.confirmPassword) {
+    ElMessage("两次输入的密码不一致！");
     return
   }
   service.post("/user/login", form)
@@ -37,20 +54,20 @@ const login = () => {
       router.push({ path: '/1', query: {} })
     })
     .catch(err => {
-      ElMessage('登录失败 请查看后端代码' + err)
+      ElMessage('登录失败,请确认信息输入正确' + err)
     })
 }
 const sendCode = () => {
-  if (!form.phone) {
-    ElMessage("手机号不能为空");
+  if (!form.email) {
+    ElMessage("邮箱账号不能为空");
     return;
   }
   // 发送验证码
-  service.post("/user/code?phone=" + form.phone)
-      .then(() => { ElMessage('验证码在后端生成 自己去后端看哦') })
+  service.post("/user/code?email=" + form.email)
+      .then(() => { ElMessage('验证码已发送') })
       .catch(err => {
         console.log(err);
-        ElMessage('验证码生成失败了呢？' + err)
+        ElMessage('验证码生成失败' + err)
       });
   // 禁用按钮
   disabled.value = true;
@@ -72,8 +89,10 @@ const sendCode = () => {
 const disabled = ref(false);
 const radio = ref(false)
 const form = reactive({
-  phone: null,
-  code: null
+  email: null,
+  code: null,
+  password: null,
+  confirmPassword: null
 })
 const codeBtnMsg = ref('点击发送验证码')
 </script>
@@ -82,12 +101,12 @@ const codeBtnMsg = ref('点击发送验证码')
   <div class="login-container">
     <div class="header">
       <div class="header-back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></div>
-      <div class="header-title">手机号码快捷登录&nbsp;&nbsp;&nbsp;</div>
+      <div class="header-title">邮箱快捷登录&nbsp;&nbsp;&nbsp;</div>
     </div>
     <div class="content">
       <div class="login-form">
         <div style="display: flex; justify-content: space-between">
-          <el-input style="width: 60%" placeholder="请输入手机号" v-model="form.phone">
+          <el-input style="width: 60%" placeholder="请输入邮箱账号" v-model="form.email">
           </el-input>
           <el-button style="width: 38%" @click="sendCode" type="success" :disabled="disabled">{{ codeBtnMsg }}</el-button>
         </div>
@@ -95,7 +114,14 @@ const codeBtnMsg = ref('点击发送验证码')
         <div style="height: 5px"></div>
         <el-input placeholder="请输入验证码" v-model="form.code">
         </el-input>
-        <div style="text-align: center; color: #8c939d;margin: 5px 0">未注册的手机号码验证后自动创建账户</div>
+        <div style="height: 5px"></div>
+        <el-input placeholder="请输入密码" v-model="form.password" show-password>
+        </el-input>
+
+        <div style="height: 5px"></div>
+        <el-input placeholder="请再次输入密码" v-model="form.confirmPassword" show-password>
+        </el-input>
+        <div style="text-align: center; color: #8c939d;margin: 5px 0">未注册的邮箱账号验证后自动创建账户</div>
         <el-button @click="login" style="width: 100%; background-color:#f63; color: #fff;">登录</el-button>
         <div style="text-align: right; color:#333333; margin: 5px 0"><a @click="goLoginByPassword"
             href="javascript:void(0)">密码登录</a></div>
