@@ -26,7 +26,7 @@ const info = reactive({})
       <div class="info-item">
         <div class="info-label">Avatar</div>
         <div class="info-btn">
-          <img width="35" :src="user.icon || '/imgs/icons/default-icon.png'" alt="">
+          <img width="35" :src="user.icon || './imgs/icons/default-icon.png'" alt="">
           <div><i class="el-icon-arrow-right"></i></div>
         </div>
       </div>
