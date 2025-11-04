@@ -30,7 +30,12 @@ const fileSelected = () => {
   };
   service
     .post("/upload/blog", formData, config)
-    .then(({ data }) => fileList.value.push('/imgs' + data))
+      .then(({ data }) => {
+        // 新增控制台打印，观察data结构
+        console.log("上传成功，返回的数据：", data);
+        // 原有的添加文件路径逻辑
+        fileList.value.push('/imgs' + data);
+      })
     .catch((err) => { ElMessage('File upload failed' + err) });
 }
 
