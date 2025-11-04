@@ -1,27 +1,15 @@
 <script setup>
-import { ref } from 'vue'
-
-defineProps({
-  msg: String,
-})
-
-const count = ref(0)
+import fullImg from '../../imgs/img.png'  // 注意路径相对 src/components
 </script>
 
 <template>
-  <div class="page-container">
-    <p class="read-the-docs">这里是路8888888****由2</p>
-  </div>
+  <img :src="fullImg" class="fullscreen-img" alt="全屏图" />
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #000;
+.fullscreen-img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
 }
-.page-container {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
 </style>
