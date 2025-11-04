@@ -31,13 +31,11 @@ service.interceptors.response.use(function (response) {
     // 一般是服务端异常或者网络异常
     console.log(error)
     if (error.response.status == 401) {
-      ElMessage('报告状态码401')
-      // 未登录，跳转
       
        useRouter().push({path:'/login',query:{}})
       
       return Promise.reject("请先登录");
     }
-    return Promise.reject("服务器异常");
+    return Promise.reject();
   });
 export default service;

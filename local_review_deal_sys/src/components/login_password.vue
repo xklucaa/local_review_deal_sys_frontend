@@ -18,13 +18,13 @@ const goBack = () => {
 const login = () => {
   // 验证邮箱号
   if (!form.email) {
-    ElMessage("邮箱账号不能为空！");
+    ElMessage("email can not be empty!");
     return
   }
 
   // 验证密码
   if (!form.password) {
-    ElMessage("密码不能为空！");
+    ElMessage("password can not be empty！");
     return
   }
   service.post("/user/loginByPassword", form)
@@ -39,7 +39,7 @@ const login = () => {
         router.push({ path: '/1', query: {} })
       })
       .catch(err => {
-        ElMessage.error('登录失败,请检查账号和密码是否填写正确!' )
+        ElMessage.error('login failed!Please checkout the username and password!' )
       })
 }
 
@@ -55,24 +55,23 @@ const form  = reactive({
   email:null,
   password:null
 })
-const codeBtnMsg = ref('点击发送验证码')
 </script>
 
 <template>
    <div class="login-container">
     <div class="header">
       <div class="header-back-btn" @click="goBack"><i class="el-icon-arrow-left"></i></div>
-      <div class="header-title">密码登录&nbsp;&nbsp;&nbsp;</div>
+      <div class="header-title">Password login&nbsp;&nbsp;&nbsp;</div>
     </div>
     <div class="content">
       <div class="login-form">
-        <el-input placeholder="请输入邮箱账号" v-model="form.email">
+        <el-input placeholder="Please enter your email" v-model="form.email">
         </el-input>
         <div style="height: 5px"></div>
-        <el-input placeholder="请输入密码" v-model="form.password" show-password>
+        <el-input placeholder="Please enter your password" v-model="form.password" show-password>
         </el-input>
-        <div style="text-align: center; color: #8c939d;margin: 5px 0"><a href="javascript:void(0)">忘记密码</a></div>
-        <el-button @click="login" style="width: 100%; background-color:#f63; color: #fff;">登录</el-button>
+        <div style="text-align: center; color: #8c939d;margin: 5px 0"><a href="javascript:void(0)">forget password</a></div>
+        <el-button @click="login" style="width: 100%; background-color:#f63; color: #fff;">login</el-button>
         <div style="text-align: right; color:#333333; margin: 5px 0"><a @click="goMsgLogin"  href="javascript:void(0)">验证码登录</a></div>
       </div>
       <div class="login-radio">
@@ -80,11 +79,9 @@ const codeBtnMsg = ref('点击发送验证码')
           <input type="radio" name="readed" v-model="radio" value="1">
           <label for="readed"></label>
         </div>
-        <div>我已阅读并同意
-          <a href="javascript:void(0)">
-          《用户服务协议》</a>、
-          <a href="javascript:void(0)">《隐私政策》</a>
-          等，接受免除或者限制责任、诉讼管辖约定等粗体标示条款
+        <div>
+          <a href="javascript:void(0)"></a>
+          <a href="javascript:void(0)"></a>
         </div>
       </div>
     </div>

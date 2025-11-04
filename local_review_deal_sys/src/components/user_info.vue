@@ -47,7 +47,7 @@ const queryUser = () => {
       queryBlogs();
     })
     .catch(err => {
-      ElMessage('No login information found, please login to view profile!' + err)
+      ElMessage('No login information found, please login to view profile!' )
       router.push({
         path: '/login', query: {}
       })

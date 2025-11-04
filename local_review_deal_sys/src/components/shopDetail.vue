@@ -52,6 +52,29 @@ const queryVochersByid = (shopId) => {
         })
         .catch((err)=>{ElMessage('Error querying voucher information for this shop'+err)})
 }
+
+// 秒杀券抢购方法
+const seckill = async (voucher) => {
+  try {
+    if (!voucher || voucher.stock < 1) {
+      ElMessage.error('This voucher is out of stock');
+      return;
+    }
+
+    // 调用后端接口
+    const res = await service.post(`/voucher-order/seckill/${voucher.id}`);
+
+    if (res.data.success) {
+      ElMessage.success('Order Successfully！');
+      // 可根据需要刷新库存或状态
+      voucher.stock -= 1;
+    } else {
+      ElMessage.success('Order Successfully！');
+    }
+  } catch (err) {
+    ElMessage.error('Error: ' + err);
+  }
+};
 </script>
 
 <template>
@@ -107,30 +130,23 @@ const queryVochersByid = (shopId) => {
       <span class="voucher-icon">Voucher</span>
       <span style="font-weight: bold;">Vouchers</span>
     </div>
-    <div class="voucher-box" v-for="v in vouchers.value" :key="v.id" v-if="!isEnd(v ? v : {})">
-      <div class="voucher-circle">
-        <div class="voucher-b"></div>
-        <div class="voucher-b"></div>
-        <div class="voucher-b"></div>
-      </div>
+    <div class="voucher-box" v-for="v in vouchers.value" :key="v.id">
       <div class="voucher-left">
-        <div class="voucher-title">{{ v.title }}</div>
-        <div class="voucher-subtitle">{{ v.subTitle }}</div>
-        <div class="voucher-price">
-          <div>￥ {{ util.formatPrice(v.payValue) }}</div> <span>{{ (v.payValue * 10) / v.actualValue }}% off</span>
-        </div>
+        <div>{{ v.title }}</div>
+        <div>{{ v.subTitle }}</div>
+        <div>Stock: {{ v.stock }}</div>
       </div>
       <div class="voucher-right">
-        <div v-if="v.type" class="seckill-box">vouchers
-          <div class="voucher-btn" :class="{ 'disable-btn': isNotBegin(v) || v.stock < 1 }" @click="seckill(v)">Flash Sale
-          </div>
-          <div class="seckill-stock">Remaining <span>{{ v.stock }}</span> left</div>
-          <div class="seckill-time">{{ formatTime(v) }}</div>
+        <!-- 秒杀券按钮 -->
+        <div v-if="v.type === 1" class="voucher-btn" @click="seckill(v)">
+          Flash Sale
         </div>
-        <div class="voucher-btn" v-else>Buy Now</div>
+        <!-- 普通券按钮 -->
+        <div v-else class="voucher-btn">Buy Now</div>
       </div>
     </div>
   </div>
+
   <div class="shop-divider"></div>
   <div class="shop-comments">
     <div class="comments-head">
