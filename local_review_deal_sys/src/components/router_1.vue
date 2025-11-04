@@ -9,7 +9,7 @@ defineProps({
   msg: String,
 })
 
-// 注入底部导航控制（如果有的话）
+// Inject bottom navigation control (if available)
 inject('showButtom')()
 
 const router = useRouter()
@@ -35,7 +35,7 @@ const info = reactive({
   current: 1,
 })
 
-// 页面加载时获取数据
+// Fetch data when page loads
 onMounted(() => {
   service
       .get('/shop-type/list')
@@ -43,7 +43,7 @@ onMounted(() => {
         info.types = res.data
       })
       .catch(() => {
-        ElMessage('获取店铺类型出错了')
+        ElMessage('Error fetching shop types')
       })
 
   service
@@ -53,25 +53,26 @@ onMounted(() => {
         info.blogs = info.blogs.concat(data)
       })
       .catch((err) => {
-        ElMessage('获取热点博客出错了哦' + err)
+        ElMessage('Error fetching hot blogs' + err)
       })
 })
 </script>
 
 <template>
-  <!-- 统一的根容器 --><div class="page-container">
-    <!-- 顶部搜索栏 -->
+  <!-- Unified root container -->
+  <div class="page-container">
+    <!-- Top search bar -->
     <div class="search-bar">
-      <div class="city-btn">杭州<i class="el-icon-arrow-down"></i></div>
+      <div class="city-btn">Shanghai<i class="el-icon-arrow-down"></i></div>
       <div class="search-input">
-        <el-input placeholder="请输入商户名、地点"></el-input>
+        <el-input placeholder="Please enter merchant name, location"></el-input>
       </div>
       <div class="header-icon" @click="toPage('user_info')">
         <el-icon size="40"><User /></el-icon>
       </div>
     </div>
 
-    <!-- 店铺类型列表 -->
+    <!-- Shop type list -->
     <div class="type-list">
       <div
           class="type-box"
@@ -86,7 +87,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 博客列表 -->
+    <!-- Blog list -->
     <div class="blog-list">
       <div class="blog-box" v-for="b in info.blogs" :key="b.id">
         <div class="blog-img" @click="toBlogDetail(b)">
@@ -111,20 +112,19 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* ✅ 页面容器占满屏幕，不留白 */
+/* ✅ Page container fills the screen, no white space */
 .page-container {
   width: 100%;
   min-height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;  /* 确保所有元素宽度计算包括边距 */
+  box-sizing: border-box;  /* Ensure all element width calculations include margins */
   background-color: #f9f9f9;
-  display: block; /* 或使用 flexbox，根据需要调整 */
+  display: block; /* Or use flexbox, adjust as needed */
   overflow-x: hidden;
 }
 
-
-/* 顶部搜索栏 */
+/* Top search bar */
 .search-bar {
   background-color: #ff6633;
   color: white;
@@ -134,10 +134,11 @@ onMounted(() => {
   height: 60px;
   padding: 0 8px;
   width: 100%;
-  box-sizing: border-box; /* 确保宽度计算包括边距 */
-  margin: 0; /* 去掉外边距，防止溢出 */
+  box-sizing: border-box; /* Ensure width calculation includes margins */
+  margin: 0; /* Remove outer margins to prevent overflow */
 }
-/* 类型列表 */
+
+/* Type list */
 .type-list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -146,7 +147,7 @@ onMounted(() => {
   margin: 0;
   padding: 10px;
   box-sizing: border-box;
-  overflow: hidden; /* 去除溢出的部分 */
+  overflow: hidden; /* Remove overflow parts */
 }
 
 .type-box {
@@ -159,30 +160,36 @@ onMounted(() => {
   padding: 10px;
   background-color: white;
 }
+
 .type-view img {
-  width: 60px; /* 图片宽度 */
-  height: 60px; /* 图片高度 */
-  object-fit: cover; /* 保证图片填满而不变形 */
+  width: 60px; /* Image width */
+  height: 60px; /* Image height */
+  object-fit: cover; /* Ensure images fill without distortion */
 }
+
 .type-text {
   margin-top: 8px;
   text-align: center;
 }
 
-  /* 博客列表 */
+/* Blog list */
 .blog-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 每行显示 4 个 */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  grid-auto-rows: masonry; /* Waterfall flow effect */
+  align-items: start; /* Top alignment */
   width: 100%;
   margin: 0;
   padding: 10px;
   box-sizing: border-box;
 }
+
 .search-input {
-  flex-grow: 1; /* 让搜索框占满剩余空间 */
+  flex-grow: 1; /* Let the search box fill remaining space */
   margin: 0 10px;
 }
+
 .blog-box {
   display: flex;
   flex-direction: column;
@@ -190,13 +197,13 @@ onMounted(() => {
   border: 1px solid #ccc;
   padding: 15px;
   background-color: white;
-  width: 100%; /* 确保 blog-box 占满父容器的宽度 */
+  width: 100%; /* Ensure blog-box fills parent container width */
   box-sizing: border-box;
 }
 
 .blog-img img {
-  width: 100%; /* 确保图片自适应宽度 */
-  height:auto;
+  width: 100%; /* Ensure images adapt to width */
+  height: auto;
 }
 
 .blog-title {
@@ -220,5 +227,4 @@ onMounted(() => {
   object-fit: cover;
   margin-right: 8px;
 }
-
 </style>

@@ -24,9 +24,9 @@ const vouchers = reactive({
 vouchers.value.push({
   "id": 1,
   "shopId": 1,
-  "title": "50元代金券",
-  "subTitle": "周一至周日均可使用",
-  "rules": "全场通用\\n无需预约\\n可无限叠加\\不兑现、不找零\\n仅限堂食",
+  "title": "50 Yuan Voucher",
+  "subTitle": "Available Monday to Sunday",
+  "rules": "Applicable to all items\\nNo reservation required\\nCan be stacked infinitely\\nNo cash redemption, no change\\nDine-in only",
   "payValue": 4750,
   "actualValue": 5000,
   "type": 0
@@ -43,14 +43,14 @@ const querShopbyid = (shopId) => {
       data.score = data.score / 10;
       Object.assign(shop,data)
     })
-    .catch((err) => { ElMessage("获取店铺的情况出错了呢" + err) })
+    .catch((err) => { ElMessage("Error getting shop information" + err) })
 }
 const queryVochersByid = (shopId) => {
   service.get("/voucher/list/" + shopId)
         .then(({data}) => {
           vouchers.value = data;
         })
-        .catch((err)=>{ElMessage('查询这个店铺的优惠券信息出错了呢'+err)})
+        .catch((err)=>{ElMessage('Error querying voucher information for this shop'+err)})
 }
 </script>
 
@@ -59,7 +59,7 @@ const queryVochersByid = (shopId) => {
     <div class="header-back-btn" @click="goBack"><el-icon>
         <ArrowLeftBold />
       </el-icon></div>
-    <div class="header-title">店铺详情</div>
+    <div class="header-title">Shop Details</div>
     <div class="header-share">...</div>
   </div>
   <div class="top-bar"></div>
@@ -67,12 +67,12 @@ const queryVochersByid = (shopId) => {
     <div class="shop-title">{{ shop.name }}</div>
     <div class="shop-rate">
       <el-rate disabled v-model="shop.score" text-color="#F63" show-score></el-rate>
-      <span>{{ shop.comments }}条</span>
+      <span>{{ shop.comments }} reviews</span>
     </div>
-    <div class="shop-rate-info"> 口味:4.9 环境:4.8 服务:4.7 </div>
+    <div class="shop-rate-info"> Taste:4.9 Environment:4.8 Service:4.7 </div>
     <div class="shop-rank">
       <img src="/imgs/bd.png" width="63" height="20" alt="">
-      <span>拱墅区好评榜第3名</span>
+      <span>No.3 in Gongshu District</span>
       <div><el-icon>
           <ArrowRightBold />
         </el-icon></div>
@@ -97,15 +97,15 @@ const queryVochersByid = (shopId) => {
   <div class="shop-divider"></div>
   <div class="shop-open-time">
     <span><i class="el-icon-watch"></i></span>
-    <div>营业时间</div>
+    <div>Business Hours</div>
     <div>{{ shop.openHours }}</div>
-    <span class="line-right">查看详情 <i class="el-icon-arrow-right"></i></span>
+    <span class="line-right">View Details <i class="el-icon-arrow-right"></i></span>
   </div>
   <div class="shop-divider"></div>
   <div class="shop-voucher">
     <div>
-      <span class="voucher-icon">券</span>
-      <span style="font-weight: bold;">代金券</span>
+      <span class="voucher-icon">Voucher</span>
+      <span style="font-weight: bold;">Vouchers</span>
     </div>
     <div class="voucher-box" v-for="v in vouchers.value" :key="v.id" v-if="!isEnd(v ? v : {})">
       <div class="voucher-circle">
@@ -117,36 +117,36 @@ const queryVochersByid = (shopId) => {
         <div class="voucher-title">{{ v.title }}</div>
         <div class="voucher-subtitle">{{ v.subTitle }}</div>
         <div class="voucher-price">
-          <div>￥ {{ util.formatPrice(v.payValue) }}</div> <span>{{ (v.payValue * 10) / v.actualValue }}折</span>
+          <div>￥ {{ util.formatPrice(v.payValue) }}</div> <span>{{ (v.payValue * 10) / v.actualValue }}% off</span>
         </div>
       </div>
       <div class="voucher-right">
         <div v-if="v.type" class="seckill-box">vouchers
-          <div class="voucher-btn" :class="{ 'disable-btn': isNotBegin(v) || v.stock < 1 }" @click="seckill(v)">限时抢购
+          <div class="voucher-btn" :class="{ 'disable-btn': isNotBegin(v) || v.stock < 1 }" @click="seckill(v)">Flash Sale
           </div>
-          <div class="seckill-stock">剩余 <span>{{ v.stock }}</span> 张</div>
+          <div class="seckill-stock">Remaining <span>{{ v.stock }}</span> left</div>
           <div class="seckill-time">{{ formatTime(v) }}</div>
         </div>
-        <div class="voucher-btn" v-else>抢购</div>
+        <div class="voucher-btn" v-else>Buy Now</div>
       </div>
     </div>
   </div>
   <div class="shop-divider"></div>
   <div class="shop-comments">
     <div class="comments-head">
-      <div>网友评价 <span>（119）</span></div>
+      <div>User Reviews <span>（119）</span></div>
       <div><i class="el-icon-arrow-right"></i></div>
     </div>
     <div class="comment-tags">
-      <div class="tag">味道赞(19)</div>
-      <div class="tag">牛肉赞(16)</div>
-      <div class="tag">菜品不错(11)</div>
-      <div class="tag">回头客(4)</div>
-      <div class="tag">分量足(4)</div>
-      <div class="tag">停车方便(3)</div>
-      <div class="tag">海鲜棒(3)</div>
-      <div class="tag">饮品赞(3)</div>
-      <div class="tag">朋友聚餐(6)</div>
+      <div class="tag">Great Taste(19)</div>
+      <div class="tag">Great Beef(16)</div>
+      <div class="tag">Good Dishes(11)</div>
+      <div class="tag">Returning Customer(4)</div>
+      <div class="tag">Generous Portions(4)</div>
+      <div class="tag">Convenient Parking(3)</div>
+      <div class="tag">Great Seafood(3)</div>
+      <div class="tag">Good Drinks(3)</div>
+      <div class="tag">Friends Gathering(6)</div>
     </div>
     <div class="comment-list">
       <div class="comment-box" v-for="i in 3" :key="i">
@@ -156,13 +156,13 @@ const queryVochersByid = (shopId) => {
             alt="">
         </div>
         <div class="comment-info">
-          <div class="comment-user">叶小乙 <span>Lv5</span></div>
+          <div class="comment-user">Ye Xiaoyi <span>Lv5</span></div>
           <div style="display: flex;" class="rate-container">
-            打分
+            Rating
             <el-rate disabled v-model="score"></el-rate>
           </div>
           <div style="padding: 5px 0; font-size: 14px">
-            某平台上买的券，价格可以当工作餐吃，虽然价格便宜，但是这家店一点都没有...
+            Bought a voucher on a platform, the price is suitable for working meals, although cheap, this shop doesn't...
           </div>
           <div class="comment-images">
             <img
@@ -179,13 +179,13 @@ const queryVochersByid = (shopId) => {
               alt="">
           </div>
           <div>
-            浏览641 &nbsp;&nbsp;&nbsp;&nbsp;评论5
+            Views 641 &nbsp;&nbsp;&nbsp;&nbsp;Comments 5
           </div>
         </div>
       </div>
       <div
         style="display: flex; justify-content: space-between;padding: 15px 0; border-top: 1px solid #f1f1f1; margin-top: 10px;">
-        <div>查看全部119条评价</div>
+        <div>View all 119 reviews</div>
         <div><i class="el-icon-arrow-right"></i></div>
       </div>
     </div>
@@ -310,17 +310,19 @@ const queryVochersByid = (shopId) => {
 
 .shop-images {
   display: flex;
-  overflow-x: scroll;
-  padding: 5px 0;
+  overflow-x: auto;
+  padding: 10px 0;
+  gap: 8px;
 }
 
 .shop-images img {
-  height: 106px;
-  width: 145px;
-  margin-right: 3px;
-  display: inline-block;
-  border-radius: 7px;
+  height: 120px;
+  width: auto;
+  max-width: 180px;
+  object-fit: cover;
+  border-radius: 8px;
   border: 1px solid #e1e1e1;
+  flex-shrink: 0;
 }
 
 .shop-address {

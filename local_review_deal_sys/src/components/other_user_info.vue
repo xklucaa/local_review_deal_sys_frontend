@@ -83,11 +83,11 @@ const toOtherInfo = (id) => {
 const follow = () => {
   service.put("/follow/" + user.id + "/" + !followed.value)
       .then(() => {
-        ElMessage({ message: followed.value ? "已取消关注" : "已关注", type: 'success' })
+        ElMessage({ message: followed.value ? "Unfollow" : "Followed", type: 'success' })
         followed.value = !followed.value
       })
       .catch((err) => {
-        ElMessage('关注失败了呢' + err)
+        ElMessage('Follow failed' + err)
       })
 }
 // const toOtherInfo = (id) => {
@@ -158,16 +158,16 @@ onMounted(() => {
       <span>杭州</span>
     </div>
     <div class="logout-btn" @click="follow" style="text-align: center">
-      {{followed ? "取消关注" : "关注"}}
+      {{followed ? "Unfollow" : "Follow"}}
     </div>
   </div>
   <div class="introduce">
     <span v-if="info.introduce"></span>
-    <span v-else>这个人很懒，什么都没有留下</span>
+    <span v-else>this user left nothing...</span>
   </div>
   <div class="content">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="笔记" name="1">
+      <el-tab-pane label="blog" name="1">
         <div v-for="b in blogs" :key="b.id" class="blog-item">
           <div class="blog-img" @click="toBlogDetail(b)"><img :src="b.images.split(',')[0]" alt=""></div>
           <div class="blog-info">
@@ -185,8 +185,8 @@ onMounted(() => {
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="共同关注" name="2">
-        <div>你们都关注了：</div>
+      <el-tab-pane label="Common following" name="2">
+        <div>You both followed：</div>
         <div class="follow-info" v-for="u in commonFollows" :key="u.id">
           <div class="follow-info-icon" @click="toOtherInfo(u.id)">
             <img :src="u.icon || '/imgs/icons/default-icon.png'" alt="">
@@ -195,7 +195,7 @@ onMounted(() => {
             <div class="name">{{u.nickName}}</div>
           </div>
           <div class="follow-info-btn" @click="toOtherInfo(u.id)">
-              去主页看看
+              go to profile
           </div>
         </div>
       </el-tab-pane>

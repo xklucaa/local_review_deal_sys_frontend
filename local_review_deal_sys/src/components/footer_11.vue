@@ -24,13 +24,13 @@ const count = ref(0)
       <div class="foot-view"><el-icon>
           <House />
         </el-icon></div>
-      <div class="foot-text">首页</div>
+      <div class="foot-text">Home Page</div>
     </div>
     <div class="foot-box" :class="{ active: activeBtn === 2 }" @click="toPage(2)">
       <div class="foot-view"><el-icon>
           <Location />
         </el-icon></div>
-      <div class="foot-text">地图</div>
+      <div class="foot-text">Map</div>
     </div>
     <div class="foot-box" @click="toPage('blog_edit')">
       <img class="add-btn" src="./imgs/add.png" alt="">
@@ -39,13 +39,13 @@ const count = ref(0)
       <div class="foot-view"><el-icon>
           <ChatLineRound />
         </el-icon></div>
-      <div class="foot-text">消息</div>
+      <div class="foot-text">Message</div>
     </div>
     <div class="foot-box" :class="{ active: activeBtn === 4 }" @click="toPage('user_info')">
       <div class="foot-view"><el-icon>
           <User />
         </el-icon></div>
-      <div class="foot-text">我的</div>
+      <div class="foot-text">Me</div>
     </div>
   </div>
 </template>

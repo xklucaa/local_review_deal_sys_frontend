@@ -19,12 +19,12 @@ const info = reactive({})
     <div class="header-back-btn" @click="goBack" ><el-icon>
           <ArrowLeftBold />
         </el-icon></div>
-    <div class="header-title">资料编辑&nbsp;&nbsp;&nbsp;</div>
+    <div class="header-title">Profile Edit</div>
   </div>
   <div class="edit-container">
     <div class="info-box">
       <div class="info-item">
-        <div class="info-label">头像</div>
+        <div class="info-label">Avatar</div>
         <div class="info-btn">
           <img width="35" :src="user.icon || '/imgs/icons/default-icon.png'" alt="">
           <div><i class="el-icon-arrow-right"></i></div>
@@ -32,7 +32,7 @@ const info = reactive({})
       </div>
       <div class="divider"></div>
       <div class="info-item">
-        <div class="info-label">昵称</div>
+        <div class="info-label">Nickname</div>
         <div class="info-btn">
           <div>{{user.nickName}}</div>
           <div>
@@ -42,9 +42,9 @@ const info = reactive({})
       </div>
       <div class="divider"></div>
       <div class="info-item">
-        <div class="info-label">个人介绍</div>
+        <div class="info-label">Bio</div>
         <div class="info-btn">
-          <div style="overflow: hidden; width: 150px;text-align: right">{{info.introduce || '介绍一下自己'}}</div>
+          <div style="overflow: hidden; width: 150px;text-align: right">{{info.introduce || 'Introduce yourself'}}</div>
           <div>
             <i class="el-icon-arrow-right"></i>
           </div>
@@ -53,25 +53,25 @@ const info = reactive({})
     </div>
     <div class="info-box">
       <div class="info-item">
-        <div class="info-label">性别</div>
+        <div class="info-label">Gender</div>
         <div class="info-btn">
-          <div>{{info.gender || '选择'}}</div>
+          <div>{{info.gender || 'Select'}}</div>
           <div><i class="el-icon-arrow-right"></i></div>
         </div>
       </div>
       <div class="divider"></div>
       <div class="info-item">
-        <div class="info-label">城市</div>
+        <div class="info-label">City</div>
         <div class="info-btn">
-          <div>{{info.city || '选择'}}</div>
+          <div>{{info.city || 'Select'}}</div>
           <div><i class="el-icon-arrow-right"></i></div>
         </div>
       </div>
       <div class="divider"></div>
       <div class="info-item">
-        <div class="info-label">生日</div>
+        <div class="info-label">Birthday</div>
         <div class="info-btn">
-          <div>{{info.birthday || '添加'}}</div>
+          <div>{{info.birthday || 'Add'}}</div>
           <div><i class="el-icon-arrow-right"></i></div>
         </div>
       </div>
@@ -79,17 +79,17 @@ const info = reactive({})
 
     <div class="info-box">
       <div class="info-item">
-        <div class="info-label">我的积分</div>
+        <div class="info-label">My Points</div>
         <div class="info-btn">
-          <div>查看积分</div>
+          <div>View Points</div>
           <div><i class="el-icon-arrow-right"></i></div>
         </div>
       </div>
       <div class="divider"></div>
       <div class="info-item">
-        <div class="info-label">会员等级</div>
+        <div class="info-label">Membership</div>
         <div class="info-btn">
-          <div><a href="javascript:void(0)">成为VIP尊享特权</a></div>
+          <div><a href="javascript:void(0)">Become VIP for Privileges</a></div>
           <div><i class="el-icon-arrow-right"></i></div>
         </div>
       </div>
@@ -104,16 +104,23 @@ const info = reactive({})
 .header{
     width: 100%;
     line-height: 40px;
-    height: 6%;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid #ff6633;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    z-index: 100;
 }
 .header-back-btn{
     width: 10%;
     color: #ff6633;
     font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .header-title {
     width: 90%;
@@ -121,6 +128,49 @@ const info = reactive({})
     font-size: 18px;
     font-family: Hiragino Sans GB,Arial,Helvetica,"\5B8B\4F53",sans-serif;
 }
+
+.edit-container{
+    background-color: #f4f4f4;
+    margin-top: 50px; /* Match header height */
+    min-height: calc(100vh - 50px);
+    padding: 0;
+}
+.divider {
+    height: 1px;
+    background-color: #e4e4e4;
+    margin: 0 15px;
+}
+.info-box {
+    margin-bottom: 10px;
+    padding: 0;
+    background-color: #fff;
+}
+.info-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 50px;
+    padding: 0 15px;
+    min-height: 50px;
+}
+.info-label{
+    font-size: 16px;
+    color: #333;
+}
+.info-btn{
+    display: flex;
+    align-items: center;
+    color: #666;
+}
+.info-btn div {
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+}
+.info-btn img {
+    border-radius: 4px;
+}
+
 .basic{
     height: 15%;
     display: flex;
@@ -183,30 +233,6 @@ const info = reactive({})
 }
 .content {
     height: 61%;
-}
-
-.edit-container{
-    background-color: #f4f4f4;
-}
-.divider {
-    height: 1px;
-    background-color: #e4e4e4;
-}
-.info-box {
-    margin-bottom: 10px;
-    padding: 5px 15px;
-    background-color: #fff;
-}
-.info-item{
-    display: flex;
-    justify-content: space-between;
-    line-height: 40px;
-}
-.info-btn{
-    display: flex;
-}
-.info-btn div {
-    margin-left: 5px;
 }
 
 .blog-item {
@@ -333,6 +359,4 @@ const info = reactive({})
     height: 75%;
     margin-right: 2px;
 }
-
-
 </style>
