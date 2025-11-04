@@ -151,7 +151,7 @@ onMounted(() => {
   </div>
   <div class="basic">
     <div class="basic-icon">
-      <img :src="user.icon || '/imgs/icons/default-icon.png'" alt="">
+      <img :src="user.icon || './imgs/icons/default-icon.png'" alt="">
     </div>
     <div class="basic-info">
       <div class="name">{{user.nickName}}</div>
@@ -189,7 +189,7 @@ onMounted(() => {
         <div>You both followed：</div>
         <div class="follow-info" v-for="u in commonFollows" :key="u.id">
           <div class="follow-info-icon" @click="toOtherInfo(u.id)">
-            <img :src="u.icon || '/imgs/icons/default-icon.png'" alt="">
+            <img :src="u.icon || './imgs/icons/default-icon.png'" alt="">
           </div>
           <div class="follow-info-name">
             <div class="name">{{u.nickName}}</div>

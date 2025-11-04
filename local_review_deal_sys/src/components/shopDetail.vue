@@ -71,7 +71,7 @@ const queryVochersByid = (shopId) => {
     </div>
     <div class="shop-rate-info"> Taste:4.9 Environment:4.8 Service:4.7 </div>
     <div class="shop-rank">
-      <img src="/imgs/bd.png" width="63" height="20" alt="">
+      <img src="./imgs/bd.png" width="63" height="20" alt="">
       <span>No.3 in Gongshu District</span>
       <div><el-icon>
           <ArrowRightBold />

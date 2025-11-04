@@ -2,7 +2,6 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 const service  = axios.create({
-    baseURL:'http://localhost:8081',
     timeout:60000,
     headers:{"Content-Type":'application/json;charset=UTF-8'},
     withCredentials: true
