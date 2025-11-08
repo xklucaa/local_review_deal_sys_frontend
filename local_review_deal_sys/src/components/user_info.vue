@@ -1,5 +1,5 @@
 <script setup>
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import service from '../utils/request';
@@ -223,7 +223,6 @@ const deleteBlog = (blog) => {
               </div>
               <div class="blog-comments"><i class="el-icon-chat-dot-round"></i> {{ b.comments }}</div>
             </div>
-            <!-- 添加删除按钮 -->
             <div class="delete-blog" @click="deleteBlog(b)">delete</div>
           </div>
         </el-tab-pane>
