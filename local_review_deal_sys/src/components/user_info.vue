@@ -145,6 +145,37 @@ const queryUserInfo = () => {
       ElMessage('Failed to query user details' + err)
     })
 }
+
+
+// 在其他方法后面添加删除博客方法
+const deleteBlog = (blog) => {
+  ElMessageBox.confirm(
+      'Are you sure you want to delete this blog? This action cannot be undone!',
+      'Delete Confirmation',
+      {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }
+  ).then(() => {
+    // Send delete request
+    service.delete(`/blog/${blog.id}`)
+        .then(() => {
+          // Remove from list
+          const index = blogs.value.findIndex(b => b.id === blog.id);
+          if (index > -1) {
+            blogs.value.splice(index, 1);
+          }
+          ElMessage.success('Blog deleted successfully！');
+        })
+        .catch((err) => {
+          ElMessage.error('Failed to delete blog:' + err);
+        });
+  }).catch(() => {
+    // User cancelled deletion
+  });
+};
+
 </script>
 
 <template>
@@ -192,6 +223,8 @@ const queryUserInfo = () => {
               </div>
               <div class="blog-comments"><i class="el-icon-chat-dot-round"></i> {{ b.comments }}</div>
             </div>
+            <!-- 添加删除按钮 -->
+            <div class="delete-blog" @click="deleteBlog(b)">delete</div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="Reviews" name="2">Reviews</el-tab-pane>
@@ -352,7 +385,17 @@ const queryUserInfo = () => {
   display: flex;
   padding: 12px 15px;
   border-bottom: 1px solid #f0f0f0;
+  align-items: center;
 }
+
+.blog-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 10px;
+}
+
 
 .blog-img {
   width: 80px;
@@ -367,13 +410,6 @@ const queryUserInfo = () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.blog-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .blog-title {
@@ -485,4 +521,22 @@ const queryUserInfo = () => {
   width: 14px;
   height: 14px;
 }
+
+.delete-blog {
+  color: #ff4d4f;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border: 1px solid #ff4d4f;
+  border-radius: 4px;
+  margin-left: 10px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.delete-blog:hover {
+  background-color: #ff4d4f;
+  color: white;
+}
+
 </style>
